@@ -1,0 +1,189 @@
+<?php include('meta_tags.php'); ?>
+<?php include('header.php'); ?>
+<?php include('sidebar.php'); ?>
+
+<style>
+/* General content wrapper styling */
+.content-wrapper {
+    padding: 20px;
+}
+
+/* Header styling */
+.content-header h1 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.breadcrumb {
+    background-color: #f5f5f5;
+    padding: 10px 15px;
+    border-radius: 4px;
+}
+
+/* Box styling */
+.box {
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px; /* Spacing between boxes */
+}
+
+/* Box header styling */
+.box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #007bff;
+    color: white;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.box-header h3 {
+    margin: 0;
+}
+
+/* Table styling */
+.table {
+    width: 90%; /* Slightly increase width for better visibility */
+    margin: 0 auto; /* Center the table */
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px; /* Moderate padding for better spacing */
+    border: 1px solid #dee2e6; /* Light border color */
+}
+
+.table th {
+    background-color: #007bff; /* Header background color */
+    color: white; /* Header text color */
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9; /* Light gray for odd rows */
+}
+
+.table-hover tbody tr:hover {
+    background-color: #e9ecef; /* Light hover color */
+}
+
+/* Button styling */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    margin-bottom: 15px; /* Spacing below the button */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .content-wrapper {
+        padding: 10px;
+    }
+
+    .box-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .table {
+        width: 100%; /* Full width on smaller screens */
+    }
+}
+</style>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>Fuel Details</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Fuel</a></li>
+            <li class="active">Details</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">Fuel Details</h3>
+						
+                    </div>
+					
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                       <a href="Fuel_details.php" class="btn btn-success pull-right">+ Add New</a>
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Sl No</th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                include('../dbconnect/dbconnect.php');
+                                $sl = 1;
+                                $sql = "SELECT * FROM fuel_detail";
+                                $res = mysqli_query($conn, $sql);
+                                while ($row = mysqli_fetch_array($res)) {
+                                ?>
+                                    <tr>
+                                        <td><?php echo $sl++; ?></td>
+                                        <td><?php echo htmlspecialchars($row['Fuel_name']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['Fuel_type']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['Fuel_amount']); ?></td>
+                                        <td><a href="Fuel_details_edit.php?id=<?php echo $row['Fuel_id']; ?>">Edit</a></td>
+                                        <td><a href="Fuel_details_delete.php?id=<?php echo $row['Fuel_id']; ?>" onClick="return confirm('Are you sure?')">Delete</a></td>
+                                    </tr>
+                                <?php
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<?php include('footer.php'); ?>
+<!-- jQuery 2.2.3 -->
+<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+<!-- Page script -->
+<script>
+$(function () {
+    $("#example1").DataTable();
+});
+</script>
